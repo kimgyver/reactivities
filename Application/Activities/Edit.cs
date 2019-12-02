@@ -37,13 +37,13 @@ namespace Application.Activities
                 activity.Title = request.Title ?? activity.Title;
                 activity.Description = request.Description ?? activity.Description;
                 activity.Category = request.Category ?? activity.Category;
-                activity.Date = request.Date ?? activity.Date;
+                //activity.Date = request.Date ?? activity.Date;
                 activity.City = request.City ?? activity.City;
                 activity.Venue = request.Venue ?? activity.Venue;
 
                 var success = await _context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;
-                throw new Exception("Problem saving channges");
+                throw new Exception("Problem saving changes");
             }
         }
     }
