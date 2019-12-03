@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 
 const NavBar: React.FC = () => {
   const activityStore = useContext(ActivityStore);
-  // const { editMode, selectedActivity } = activityStore;
 
   return (
     <Menu fixed='top' inverted>
