@@ -6,8 +6,7 @@ import agent from '../api/agent';
 class ActivityStore {
   @observable activities: IActivity[] = [];
   @observable loading = false;
-  @observable selectedActivity: IActivity | undefined = undefined;
-  @observable editMode = false;
+  @observable selectedActivity: IActivity | null = null;
   @observable submitting = false;
   @observable target = '';
 
@@ -41,12 +40,29 @@ class ActivityStore {
     //   .finally(() => (this.loading = false));
   };
 
+  @action loadActivity = async (id: string) => {
+    let activity = (this.selectedActivity = this.activities.filter(
+      a => a.id === id
+    )[0]);
+    if (activity) {
+      this.selectedActivity = activity;
+    } else {
+      this.loading = true;
+      try {
+        activity = await agent.Activities.details(id);
+        this.selectedActivity = activity;
+      } catch (error) {
+        console.log(error);
+      }
+      this.loading = false;
+    }
+  };
+
   @action createActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
       await agent.Activities.create(activity);
       this.activities.push(activity);
-      this.editMode = false;
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +78,6 @@ class ActivityStore {
         activity
       ];
       this.selectedActivity = activity;
-      this.editMode = false;
     } catch (error) {
       console.log(error);
     }
@@ -85,27 +100,8 @@ class ActivityStore {
     this.target = '';
   };
 
-  @action openCreateForm = () => {
-    this.editMode = true;
-    this.selectedActivity = undefined;
-  };
-
-  @action openEditForm = (id: string) => {
-    this.selectedActivity = this.activities.filter(a => a.id === id)[0];
-    this.editMode = true;
-  };
-
-  @action cancelSelectedActivity = () => {
-    this.selectedActivity = undefined;
-  };
-
-  @action cancelFormOpen = () => {
-    this.editMode = false;
-  };
-
-  @action selectActivity = (id: string) => {
-    this.selectedActivity = this.activities.filter(a => a.id === id)[0];
-    this.editMode = false;
+  @action clearActivity = () => {
+    this.selectedActivity = null;
   };
 }
 
