@@ -33,6 +33,15 @@ namespace Persistence
                     },
                     new Activity
                     {
+                        Title = "Past Activity 3",
+                        Date = DateTime.Now.AddMonths(-1),
+                        Description = "Activity 1 month ago",
+                        Category = "music",
+                        City = "Seoul",
+                        Venue = "Olympic Park",
+                    },
+                    new Activity
+                    {
                         Title = "Future Activity 1",
                         Date = DateTime.Now.AddMonths(1),
                         Description = "Activity 1 month in future",
